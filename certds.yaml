@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: trusted-ca
+  namespace: kube-system
+data:
+  ca.crt: |+
+    -----BEGIN CERTIFICATE-----
+    MIIC9DCCAdygAwIBAgIQZ2PFYiVXOLzhMH4g5qhYBjANBgkqhkiG9w0BAQsFADAU
+    MRIwEAYDVQQDEwloYXJib3ItY2EwHhcNMjExMjEzMTA1NTIyWhcNMjIxMjEzMTA1
+    NTIyWjAUMRIwEAYDVQQDEwloYXJib3ItY2EwggEiMA0GCSqGSIb3DQEBAQUAA4IB
+    DwAwggEKAoIBAQC90+gIZlfr/Rt0WzNoM7A9cejbOZNhhCnER1S2fdLBy3KBYGsN
+    gVfUccV+d6p2JpNN9Nl1kw8AqNacxPzGdYsTP/+G1KOuyvFDiFLH0XEyBUKxYhgk
+    qSes30dbMPH969jGp2ejHenvtXib0ILn8jFLtpFYD1yWUeNhUo7y+NH+ModuEsyW
+    yfDC2coJmLnaNooweqG2rUer4+NMZOcCGmFWsfMbTMKc84lHfpke5QO7bJ8ZAlSE
+    yQR6zg9DmhliHDhf8xihM9fhoeU9VEtKTnbOl2BA4W+hWVWiVHIsp14T7LTd6DPX
+    71kt4b090wmC2x1s86JZ8S6MXw5sd4zKRzsZAgMBAAGjQjBAMA4GA1UdDwEB/wQE
+    AwICpDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYDVR0TAQH/BAUw
+    AwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAgRqX+ZhtpWRftzk1nWzaIfPpqLDCRtbg
+    TMqscoH1SU2XKWQO4nfYd/+l4tesDxm9Kj/O7ojW1oe7tgqQyc2svwUMiAP1Z/cH
+    djVCYQI2QT6eZQcZ8OoFYXW3w+iksduYZ9dYRfbJdDAz8LMGMTGy2OQv+Xy5Ma35
+    rq/E1xVS4uUES6fLYwuuLknEeDSV0IQ7kvGbUL27W9CQefS/S0F7xhUdMXMD2mDZ
+    giE04JhkTiJCAcPvlCRnO9hHRi1N6QqKvYWs0LzRLJjrIFTnYobSLfzu3wS54rXB
+    ZRWJvCQ87hd22NViT9A0aU0e4FjtU6JkgpWFmLDxE1x+J1ny2i2bqA==
+    -----END CERTIFICATE-----
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: setup-script
+  namespace: kube-system
+data:
+  setup.sh: |
+    echo "$TRUSTED_CERT" > /usr/local/share/ca-certificates/ca.crt && update-ca-certificates && systemctl restart containerd
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  namespace: kube-system
+  name: node-custom-setup
+  labels:
+    k8s-app: node-custom-setup
+spec:
+  selector:
+    matchLabels:
+      k8s-app: node-custom-setup
+  template:
+    metadata:
+      labels:
+        k8s-app: node-custom-setup
+    spec:
+      hostPID: true
+      hostNetwork: true
+      initContainers:
+      - name: init-node
+        command: ["nsenter"]
+        args: ["--mount=/proc/1/ns/mnt", "--", "sh", "-c", "$(SETUP_SCRIPT)"]
+        image: debian
+        env:
+        - name: TRUSTED_CERT
+          valueFrom:
+            configMapKeyRef:
+              name: trusted-ca
+              key: ca.crt
+        - name: SETUP_SCRIPT
+          valueFrom:
+            configMapKeyRef:
+              name: setup-script
+              key: setup.sh
+        securityContext:
+          privileged: true
+      containers:
+      - name: wait
+        image: k8s.gcr.io/pause:3.1
+
