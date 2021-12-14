@@ -17,6 +17,8 @@ We want the harbor to be publicly accessible via domain name. First you need to 
 westeurope.cloudapp.azure.com is a domain name for Azure Load Balancer that is assigned for K8s. We will need to assign this subdomain name for Harbor's public ip. But before we deploy the Harbor we don't have this IP assigned yet. That is why we need to guess a subdomain name and hope it is unique across westeurope.cloudapp.azure.com.
 
     ```bash
+    helm repo add harbor https://helm.goharbor.io
+    
     helm install my-harbor harbor/harbor \ 
     --version 1.7.3 --set expose.type=loadBalancer \
     --set expose.tls.auto.commonName={UNIQUE_NAME}.westeurope.cloudapp.azure.com \
