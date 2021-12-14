@@ -58,7 +58,7 @@ sudo docker images
 docker tag azurevote st20harbor.westeurope.cloudapp.azure.com/myproject/azurevote
 docker push st20harbor.westeurope.cloudapp.azure.com/myproject/azurevote
 
-sudo docker login
+sudo docker login st20harbor.westeurope.cloudapp.azure.com
 ```
 
 1. There are two ways of resolving this issue:
