@@ -116,8 +116,10 @@ pass: Passw0rd1!123
 - `kubectl create clusterrolebinding jenkins-robot-binding --clusterrole=cluster-admin --serviceaccount=default:jenkins-robot`
 - `kubectl get serviceaccount jenkins-robot -o go-template --template='{{range .secrets}}{{.name}}{{"\n"}}{{end}}'`
 - `kubectl get secrets jenkins-robot-token-d6d8z -o go-template --template '{{index .data "token"}}' | base64 -d`
-3. Create new credential in Jenkins of type **Secret text** and paste the resulting token there.
-4. Configure new Jenkins job with two steps:
+- base64 decode: https://www.base64decode.org/
+3. Create new credential in Jenkins of type **Secret text** and paste the resulting token there. 
+`cat ~/.kube/config`
+5. Configure new Jenkins job with two steps:
 ```
 # build docker image and push
 WEB_IMAGE_NAME="piotrharbor.westeurope.cloudapp.azure.com/test/azurevote:${BUILD_NUMBER}"
