@@ -54,6 +54,9 @@ git clone https://github.com/cloudstateu/k8s-ron-2021-12-14.git
 cd k8s-ron-2021-12-14/azure-vote
 sudo docker build -t azurevote .
 sudo docker images
+
+docker tag azurevote st20harbor.westeurope.cloudapp.azure.com/myproject/azurevote
+docker push st20harbor.westeurope.cloudapp.azure.com/myproject/azurevote
 ```
 
 1. There are two ways of resolving this issue:
