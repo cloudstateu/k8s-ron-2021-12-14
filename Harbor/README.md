@@ -106,6 +106,8 @@ sudo service docker restart
 ## Task 4: Configure Jenkins CD process
 ```
 http://20.123.164.176:8080/
+user: piotr
+pass: Passw0rd1!123
 ```
 
 1. In Jenkins, create credentials for user and password to Harbor (robot account)
