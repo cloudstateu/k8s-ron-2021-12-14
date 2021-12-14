@@ -49,6 +49,13 @@ pass: Harbor12345
 
 ## Task 2: Push image to harbor
 
+```
+git clone https://github.com/cloudstateu/k8s-ron-2021-12-14.git
+cd k8s-ron-2021-12-14/azure-vote
+sudo docker build -t azurevote .
+sudo docker images
+```
+
 1. There are two ways of resolving this issue:
 - Add harbor host to docker insecure registries (https://docs.docker.com/registry/insecure/)
 - Download certificate from harbor (it is stored as a K8s secret) and add this cert to Docker trusted certificates (https://docs.docker.com/engine/security/certificates/)
