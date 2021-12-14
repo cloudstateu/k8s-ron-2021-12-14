@@ -75,6 +75,7 @@ mv getcert ca.crt
 sudo mkdir /etc/docker/certs.d
 sudo mkdir /etc/docker/certs.d/st20harbor.westeurope.cloudapp.azure.com
 sudo cp ca.crt /etc/docker/certs.d/st20harbor.westeurope.cloudapp.azure.com
+sudo service docker restart
 ```
 
 4. Add new harbor user
