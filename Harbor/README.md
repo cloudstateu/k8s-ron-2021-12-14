@@ -55,10 +55,10 @@ cd k8s-ron-2021-12-14/azure-vote
 sudo docker build -t azurevote .
 sudo docker images
 
+sudo docker login st20harbor.westeurope.cloudapp.azure.com
+
 docker tag azurevote st20harbor.westeurope.cloudapp.azure.com/myproject/azurevote
 docker push st20harbor.westeurope.cloudapp.azure.com/myproject/azurevote
-
-sudo docker login st20harbor.westeurope.cloudapp.azure.com
 ```
 
 1. There are two ways of resolving this issue:
