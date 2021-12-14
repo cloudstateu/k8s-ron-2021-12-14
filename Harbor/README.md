@@ -69,6 +69,10 @@ sudo docker login st20harbor.westeurope.cloudapp.azure.com
 
 3. Add this cert to trusted certificates accoring to instructions here: https://docs.docker.com/engine/security/certificates/
 
+```
+wget https://st20harbor.westeurope.cloudapp.azure.com/api/v2.0/systeminfo/getcert --no-check-certificate -o ca.crt
+```
+
 4. Add new harbor user
 
 5. type `docker login HARBOR_HOST` and log in using newly created user.
