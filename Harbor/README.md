@@ -95,6 +95,7 @@ sudo service docker restart
 3. Try to deploy
 4. Create k8s secret for Harbor using robot account:
    `kubectl create secret docker-registry regcredpwc --docker-server=st20harbor.westeurope.cloudapp.azure.com --docker-username='robot$myrobot' --docker-password=O5odWt3JSreviOG7ZEBCLKERP7TtGKSn`
+   `kubectl apply -f azure-vote-deployment.yaml`
 5. Check that application is working on public IP address
 
 
