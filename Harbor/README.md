@@ -106,6 +106,8 @@ sudo service docker restart
 ## Task 4: Configure Jenkins CD process
 ```
 http://13.81.211.179:8080/
+http://chmjenkins.westeurope.cloudapp.azure.com:8080
+
 user: piotr
 pass: Passw0rd1!123
 ```
