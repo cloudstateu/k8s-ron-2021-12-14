@@ -61,7 +61,7 @@ In this lab you will deploy Prometheus and grafana
 1. Install Grafana
 
     ```bash
-    helm install my-grafana grafana/grafana -n monitoring
+    helm install my-grafana grafana/grafana -n monitoring --set service.type=LoadBalance
     ```
 
 1. Get the `admin` account password
